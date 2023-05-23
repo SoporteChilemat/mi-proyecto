@@ -3,8 +3,8 @@
     position: fixed;
     right: 0;
     top: 100px;
-    width: 300px;
-    height: calc(100% - 40%);
+    max-width: 100%;
+    max-height: calc(100% - 40%);
     background: #ffffff;
     z-index: 999;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
@@ -13,10 +13,18 @@
     transition: transform 0.3s ease-in-out;
     border-radius: 10px;
     transform: translateX(100%);
+    display: flex;
+    flex-direction: column;
 }
 
 .cart-panel.open {
     transform: translateX(0);
+}
+
+.separator {
+    border-right: 1px solid black;
+    padding-right: 10px;
+    margin-right: 10px;
 }
 
 .cart-panel-item {
@@ -51,4 +59,16 @@
     /* Aplica negrita al texto */
     color: green;
     /* Establece el color del texto como verde */
+}
+
+.cart-panel-item img.trash-icon {
+    width: 25px;
+    height: 30px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .cart-panel {
+        top: 250px;
+    }
 }

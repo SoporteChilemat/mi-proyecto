@@ -46,6 +46,14 @@ const executeQuery = (sql, res) => {
     connection.execSql(request);
   });
 
+  connection.on('error', function (err) {
+    if (err.code === 'ECONNRESET') {
+      console.error('Connection reset by peer');
+    } else {
+      console.error(err);
+    }
+  });
+
   connection.connect();
 };
 

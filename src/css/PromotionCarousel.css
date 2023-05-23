@@ -1,78 +1,63 @@
 .carousel-container {
     position: relative;
-    margin: 20px 0;
-    /* Agrega un espacio de 20px arriba y abajo del carrusel */
-    padding-top: 50px;
+    width: 100vw;
+    /* 100% del ancho de la ventana de visualización */
+    overflow: hidden;
 }
 
 .carousel-buttons {
     position: absolute;
     top: 50%;
-    right: 0;
-    /* Cambio: Alinea la barra lateral a la derecha */
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    width: calc(100% - 40px);
-    /* Cambio: Resta el espacio para la flecha de la derecha */
-    padding-right: 20px;
-    /* Agrega espacio para la flecha de la derecha */
-    z-index: 1;
+    width: 100vw;
+    /* 100% del ancho de la ventana de visualización */
+    z-index: 10;
 }
 
-.carousel-buttons button:first-child {
-    margin-right: auto;
-    /* Cambio: Alinea la flecha de la derecha a la izquierda */
-}
-
-.carousel-buttons button {
-    background-color: transparent;
+.carousel-button {
+    background: none;
     border: none;
-    color: #047826;
-    font-size: 40px;
+    color: #fff;
     cursor: pointer;
-    transition: color 0.3s ease;
+    font-size: 2em;
+    padding: 1em;
+    position: absolute;
 }
 
-.carousel-buttons button:focus {
-    outline: none;
+.carousel-button:hover {
+    color: #ccc;
 }
 
-.carousel-buttons button:hover {
-    color: #1e873d;
-    text-decoration: underline;
+.carousel-button:first-of-type {
+    left: 0;
 }
 
-.carousel-buttons button:before {
-    font-family: "Arial", sans-serif;
-}
-
-.carousel-buttons .carousel-prev:before,
-.carousel-buttons .carousel-next:before {
-    position: relative;
-    margin-right: 10px;
-    margin-left: 10px;
+.carousel-button:last-of-type {
+    right: 0;
 }
 
 .slide-item {
-    width: 100vw;
-    /* Ancho al 100% de la ventana */
-    height: 400px;
-    /* Altura máxima deseada */
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
-    /* Oculta el contenido que exceda el contenedor */
+    width: 100vw;
+    /* 100% del ancho de la ventana de visualización */
 }
 
 .slide-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    /* Estira la imagen para llenar el contenedor */
+    width: 100vw;
+    /* 100% del ancho de la ventana de visualización */
+    height: auto;
 }
+
 
 .slick-dots {
     margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .carousel-container {
+        position: relative;
+        /* Agrega un espacio de 20px arriba y abajo del carrusel */
+        padding-top: 200px;
+    }
 }
