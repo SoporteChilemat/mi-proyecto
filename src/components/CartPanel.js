@@ -1,10 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { CartContext } from './CartContext';
 import './../css/CartPanel.css';
 import trashIcon from '../trash-can.png';
 
 const CartPanel = ({ isCartPanelOpen }) => {
   const { cart, removeFromCart } = useContext(CartContext);
+
+  useEffect(() => {
+    const banner = document.querySelector('.banner-superior');
+    const cartPanel = document.querySelector('.cart-panel');
+    const bannerHeight = banner.offsetHeight;
+    cartPanel.style.marginTop = `${bannerHeight}px`;
+    // Actualizar la posición del panel del carrito cuando cambie el tamaño de la ventana
+    const handleResize = () => {
+      const newBannerHeight = banner.offsetHeight;
+      cartPanel.style.marginTop = `${newBannerHeight}px`;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Agrupar y sumar las cantidades de productos con el mismo código
   const groupedCart = cart.reduce((accumulator, product) => {
@@ -41,7 +57,7 @@ const CartPanel = ({ isCartPanelOpen }) => {
     <div className={`cart-panel ${isCartPanelOpen ? 'open' : 'close'}`}>
       <h2>Cotización:</h2>
       {cartItems}
-      <div>Total General: ${sumaTotal}</div>
+      <span className="total-label">Total General:</span> ${sumaTotal}
     </div>
   );
 };

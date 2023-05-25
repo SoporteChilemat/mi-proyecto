@@ -7,7 +7,6 @@ import cartIcon from '../carrito.png';
 function BannerSuperior({ setIsCartPanelOpen }) {
   const { cart } = useContext(CartContext);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isCartPanelOpen] = useState(false);
 
   const handleCartIconClick = () => {
     setIsCartPanelOpen(prevIsCartPanelOpen => {

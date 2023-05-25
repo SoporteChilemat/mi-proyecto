@@ -14,8 +14,8 @@
 .center-container {
   display: flex;
   align-items: center;
-  margin-right: 20px;
-  margin-left: 0;
+  margin-right: 2%; /* Modifica este valor según tus necesidades */
+  margin-left: 2%; /* Modifica este valor según tus necesidades */
 }
 
 .logo {
@@ -31,7 +31,7 @@
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  margin-right: 20px;
+  margin-right: 2%; /* Modifica este valor según tus necesidades */
   margin-left: 0;
   border-radius: 50px;
 }
@@ -40,17 +40,16 @@
   display: flex;
   align-items: center;
   margin-left: auto;
-  margin-right: 36%;
-  /* Modifica este valor según tus necesidades */
+  width: 100%;
+  margin-left: 2%; /* Modifica este valor según tus necesidades */
 }
 
 .search-input {
   padding: 10px 20px;
-  margin-right: 10px;
+  margin-right: 2%;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 300px;
-  /* Modifica este valor según tus necesidades */
+  width: 50%; /* Modifica este valor según tus necesidades */
   border-radius: 50px;
 }
 
@@ -110,8 +109,7 @@
     margin-top: 10px;
     align-items: center;
     width: 100%;
-    margin-right: 0;
-    /* Elimina el margen derecho */
+    margin-right: 0; /* Elimina el margen derecho */
   }
 
   .search-input {
@@ -120,7 +118,6 @@
 
   .cart-icon-container {
     margin-top: 10px;
-    margin-left: auto;
-    /* Elimina el margen izquierdo */
+    margin-left: auto; /* Elimina el margen izquierdo */
   }
 }

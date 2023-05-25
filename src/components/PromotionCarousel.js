@@ -7,10 +7,60 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const PromotionCarousel = () => {
     const [images, setImages] = useState([]);
-    const sliderRef = useRef(null);
+    const sliderRef = useRef(null); 
+    const [autoRotate, setAutoRotate] = useState(true);
+
+    useEffect(() => {
+        let interval;
+
+        if (autoRotate) {
+            interval = setInterval(() => {
+                nextSlide();
+            }, 10000);
+        }
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [autoRotate]);
+
+    const nextSlide = () => {
+        if (!autoRotate) {
+            setAutoRotate(true);
+        }
+        sliderRef.current.slickNext();
+    };
+
+    const previousSlide = () => {
+        if (!autoRotate) {
+            setAutoRotate(true);
+        }
+        sliderRef.current.slickPrev();
+    };
+
+    const handleUserInteraction = () => {
+        setAutoRotate(false);
+    };
+
 
     useEffect(() => {
         fetchImages();
+    }, []);
+
+    useEffect(() => {
+        const banner = document.querySelector('.banner-superior');
+        const carouselContainer = document.querySelector('.carousel-container');
+        const bannerHeight = banner.offsetHeight;
+        carouselContainer.style.marginTop = `${bannerHeight}px`;
+        // Actualizar la posición del carrusel cuando cambie el tamaño de la ventana
+        const handleResize = () => {
+            const newBannerHeight = banner.offsetHeight;
+            carouselContainer.style.marginTop = `${newBannerHeight}px`;
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const fetchImages = async () => {
@@ -28,14 +78,6 @@ const PromotionCarousel = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1
-    };
-
-    const nextSlide = () => {
-        sliderRef.current.slickNext();
-    };
-
-    const previousSlide = () => {
-        sliderRef.current.slickPrev();
     };
 
     return (

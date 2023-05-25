@@ -58,17 +58,45 @@ const executeQuery = (sql, res) => {
 };
 
 app.get('/api/products', (req, res, next) => {
-  executeQuery("SELECT * FROM productos", function (rows) {
+  const page = req.query.page || 1;
+  const pageSize = 20;
+  const sort = req.query.sort || ''; // Opción de ordenamiento seleccionada
+  const order = req.query.order || 'asc'; // Dirección del ordenamiento
+
+  let orderBy = 'id'; // Orden predeterminado por ID
+  if (sort === 'price') {
+    orderBy = 'precio';
+  } else if (sort === 'name') {
+    orderBy = 'nombre';
+  } else if (sort === 'code') {
+    orderBy = 'codigo';
+  }
+
+  // Verificamos que la dirección del ordenamiento sea válida
+  if (order !== 'asc' && order !== 'desc') {
+    return res.status(400).send('Invalid order parameter');
+  }
+
+  // Creamos la consulta SQL
+  let sql = `
+    SELECT COUNT(*) OVER () as TotalCount, *
+    FROM productos
+    ORDER BY ${orderBy} ${order} 
+    OFFSET ${(page - 1) * pageSize} ROWS FETCH NEXT ${pageSize} ROWS ONLY
+  `;
+
+  executeQuery(sql, function (rows) {
+    const totalCount = rows.length > 0 ? rows[0][0].value : 0; // Total count from the first row
     const products = rows.map((columns) => ({
-      id: columns[0].value,
-      nombre: columns[1].value,
-      codigo: columns[2].value,
-      descripcion: columns[3].value,
-      precio: columns[4].value,
-      imagen: columns[5].value,
+      id: columns[1].value,
+      nombre: columns[2].value,
+      codigo: columns[3].value,
+      descripcion: columns[4].value,
+      precio: columns[5].value,
+      imagen: columns[6].value,
     }));
 
-    res.json({ products });
+    res.json({ products, totalCount });
   });
 });
 
