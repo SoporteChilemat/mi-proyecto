@@ -11,7 +11,6 @@ const CartPanel = ({ isCartPanelOpen }) => {
     const cartPanel = document.querySelector('.cart-panel');
     const bannerHeight = banner.offsetHeight;
     cartPanel.style.marginTop = `${bannerHeight}px`;
-    // Actualizar la posición del panel del carrito cuando cambie el tamaño de la ventana
     const handleResize = () => {
       const newBannerHeight = banner.offsetHeight;
       cartPanel.style.marginTop = `${newBannerHeight}px`;
@@ -22,7 +21,6 @@ const CartPanel = ({ isCartPanelOpen }) => {
     };
   }, []);
 
-  // Agrupar y sumar las cantidades de productos con el mismo código
   const groupedCart = cart.reduce((accumulator, product) => {
     if (accumulator[product.codigo]) {
       accumulator[product.codigo].cantidad += 1;
@@ -32,20 +30,18 @@ const CartPanel = ({ isCartPanelOpen }) => {
     return accumulator;
   }, {});
 
-  // Calcular la suma total de todos los productos en el carrito
-  const sumaTotal = Object.values(groupedCart).reduce((total, product) => {
-    const totalProducto = product.cantidad * product.precio;
+  const sumaTotal = Math.round(Object.values(groupedCart).reduce((total, product) => {
+    const totalProducto = Math.round(product.cantidad * product.precio);
     return total + totalProducto;
-  }, 0);
+  }, 0)).toLocaleString();
 
-  // Renderizar los elementos del carrito actualizados con las cantidades sumadas y el total de cada producto
   const cartItems = Object.entries(groupedCart).map(([codigo, product]) => {
-    const totalProducto = product.cantidad * product.precio;
+    const totalProducto = Math.round(product.cantidad * product.precio).toLocaleString();
     return (
       <div key={codigo} className="cart-panel-item">
         <img src={`data:image/jpeg;base64,${product.imagen}`} />
         <div className="separator">{product.nombre}</div>
-        <div className="separator">Precio: {product.precio}</div>
+        <div className="separator">Precio: ${Math.round(product.precio).toLocaleString()}</div>
         <div className="separator">Cantidad: {product.cantidad}</div>
         <div className="separator">Total: ${totalProducto}</div>
         <img src={trashIcon} alt="Eliminar" className="trash-icon" onClick={() => removeFromCart(codigo)} />

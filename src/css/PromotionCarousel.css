@@ -1,79 +1,52 @@
-.position-relative {
+.carousel-container {
     position: relative;
-}
-
-.margin-auto {
-    margin: auto auto;
-}
-
-.position-absolute {
-    position: absolute;
+    width: 100%;
+    height: auto;
+    /* Adjust this value based on your needs */
+    overflow: hidden;
 }
 
 .carousel-buttons {
     position: absolute;
     top: 50%;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    /* Ensures buttons won't block the slides */
     z-index: 10;
 }
 
 .carousel-button {
-    background: none;
+    pointer-events: all;
+    /* Re-enable pointer events for the buttons */
+    background-color: rgba(0, 114, 60, 0.5);
+    /* Semi-transparent background */
+    color: #fff;
     border: none;
-    color: #00723c;
+    padding: 10px 15px;
     cursor: pointer;
-    font-size: 2em;
-    padding: 1em;
-    position: absolute;
-    top: 50%;
+    font-size: 20px;
 }
 
-.carousel-button:hover {
-    color: #ccc;
-}
-
-.carousel-button:first-of-type {
-    left: 0;
-}
-
-.carousel-button:last-of-type {
-    right: 0;
+.carousel-button:focus {
+    outline: none;
 }
 
 .slide-item {
+    height: auto;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .slide-item img {
-    max-width: 100%;
-    max-height: 100%;
     width: 100%;
-}
-
-.slick-dots {
-    margin-top: 20px;
-}
-
-/* Mobile first design */
-@media (min-width: 769px) {
-    .carousel-container {
-        position: relative;
-        margin: auto auto;
-    }
-
-    .carousel-buttons {
-        display: block;
-    }
+    height: auto;
 }
 
 @media (max-width: 768px) {
-    .carousel-container {
-        margin: 20px 0;
-    }
-
-    .carousel-buttons {
+     .carousel-buttons {
         display: none;
     }
 }
