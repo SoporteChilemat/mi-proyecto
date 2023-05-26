@@ -24,7 +24,7 @@ const App = () => {
       {/* Resto del contenido */}
       <CartProvider>
         <BannerSuperior setIsCartPanelOpen={setIsCartPanelOpen} />
-        <CartPanel isCartPanelOpen={isCartPanelOpen} />
+        <CartPanel isCartPanelOpen={isCartPanelOpen} setIsCartPanelOpen={setIsCartPanelOpen} />
         <PromotionCarousel />
         <ProductList />
         <BannerInferior />

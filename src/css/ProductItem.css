@@ -1,0 +1,87 @@
+.product-item {
+    padding: 20px;
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-dark);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-item.hovered {
+    transform: translateY(-5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.product-item img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+}
+
+.product-item h3 {
+    font-size: 1.125rem;
+    margin: 0;
+}
+
+.product-item p {
+    margin: 0;
+    padding: 5px;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-decrement,
+.quantity-increment {
+    width: 30px;
+    height: 30px;
+    background-color: #f5f5f5;
+    border: none;
+    color: #333;
+    font-size: 16px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 45%;
+    /* Add border-radius to round the buttons */
+}
+
+.quantity-decrement:hover,
+.quantity-increment:hover {
+    background-color: #00723c;
+    color: white;
+}
+
+input[type="number"] {
+    width: 50px;
+    height: 30px;
+    border: 1px solid #ccc;
+    padding: 4px;
+    text-align: center;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.agregar {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 25px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.agregar:hover {
+    background-color: #5db577;
+}

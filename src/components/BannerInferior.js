@@ -1,4 +1,3 @@
-// Banner.js
 import React from 'react';
 import './../css/BannerInferior.css';
 import logo from '../logo.png';
@@ -10,7 +9,12 @@ const SOCIAL_MEDIA_URLS = [
   { url: "https://www.instagram.com", icon: <FaInstagram />, alt: "Instagram" },
 ];
 
-const ADDRESS_LIST = ["Dirección 1", "Dirección 2", "Dirección 3", "Dirección 4"];
+const ADDRESS_LIST = [
+  { address: "Dirección 1", mapsUrl: "https://www.google.com/maps?q=Dirección+1" },
+  { address: "Dirección 2", mapsUrl: "https://www.google.com/maps?q=Dirección+2" },
+  { address: "Dirección 3", mapsUrl: "https://www.google.com/maps?q=Dirección+3" },
+  { address: "Dirección 4", mapsUrl: "https://www.google.com/maps?q=Dirección+4" },
+];
 
 const BannerInferior = () => {
   const handleBannerClick = () => {
@@ -37,7 +41,13 @@ const BannerInferior = () => {
         <div className="direcciones">
           <h2>Direcciones</h2>
           <ul className="address-list">
-            {ADDRESS_LIST.map(address => <li key={address}>{address}</li>)}
+            {ADDRESS_LIST.map(({ address, mapsUrl }) => (
+              <li key={address}>
+                <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="blue-address">
+                  {address}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="logo-Inferior">

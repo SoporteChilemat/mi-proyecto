@@ -55,7 +55,7 @@ function BannerSuperior({ setIsCartPanelOpen }) {
           Buscar
         </button>
       </form>
-      <div className="cart-icon-container" onClick={handleCartIconClick}>
+      <div className="cart-icon-container" id="cart-icon-container" onClick={handleCartIconClick}>
         <img src={cartIcon} alt="Carrito de compras" className="cart-icon" />
         {cart.length > 0 && (
           <div className="cart-count">

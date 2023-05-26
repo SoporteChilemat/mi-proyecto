@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProductItem from './ProductItem';
-import './../css/Products.css';
+import './../css/ProductList.css';
+import './../css/ProductItem.css';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -55,7 +56,7 @@ const ProductList = () => {
             <option value="code-desc">Codigo (Descendente)</option>
           </select>
         </div>
-        <div class="pagination-buttons pagination-buttons-top">
+        <div class="pagination-buttons pagination-buttons-top" id="pagination-buttons-top">
           <button disabled={!canGoPrev()} onClick={() => setPage(prevPage => prevPage - 1)}>
             Atras
           </button>
@@ -69,7 +70,7 @@ const ProductList = () => {
           <ProductItem key={product.id} product={product} />
         ))}
       </div>
-      <div className="pagination-buttons pagination-buttons-bottom">
+      <div className="pagination-buttons pagination-buttons-bottom" id="pagination-buttons-bottom">
         <button disabled={!canGoPrev()} onClick={() => setPage(prevPage => prevPage - 1)}>
           Previous
         </button>

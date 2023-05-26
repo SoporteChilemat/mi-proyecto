@@ -3,8 +3,41 @@ import { CartContext } from './CartContext';
 import './../css/CartPanel.css';
 import trashIcon from '../trash-can.png';
 
-const CartPanel = ({ isCartPanelOpen }) => {
+const CartPanel = ({ isCartPanelOpen, setIsCartPanelOpen }) => {
   const { cart, removeFromCart } = useContext(CartContext);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      // Ignore clicks on the cart icon
+      if (e.target.closest('#cart-icon-container')) {
+        return;
+      }
+
+      if (e.target.closest('#agregar-button')) {
+        return;
+      }
+
+      if (e.target.closest('#pagination-buttons-top')) {
+        return;
+      }
+
+      if (e.target.closest('#pagination-buttons-bottom')) {
+        return;
+      }
+
+      if (e.target.closest('#quantity-pack')) {
+        return;
+      }
+
+      if (!e.target.closest('.cart-panel')) {
+        setIsCartPanelOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [setIsCartPanelOpen]);
 
   useEffect(() => {
     const banner = document.querySelector('.banner-superior');
