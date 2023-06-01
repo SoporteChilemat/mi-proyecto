@@ -34,6 +34,7 @@
 }
 
 .slide-item {
+    outline: none;
     height: auto;
     display: flex;
     align-items: center;
@@ -46,7 +47,7 @@
 }
 
 @media (max-width: 768px) {
-     .carousel-buttons {
+    .carousel-buttons {
         display: none;
     }
 }

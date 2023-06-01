@@ -57,11 +57,30 @@ const executeQuery = (sql, res) => {
   connection.connect();
 };
 
+app.get('/api/searchProducts', (req, res, next) => {
+  const query = req.query.q;
+  const sql = `SELECT * FROM productos WHERE nombre LIKE '%${query}%'`;
+
+  executeQuery(sql, function (rows) {
+    const products = rows.map((columns) => ({
+      id: columns[1].value,
+      nombre: columns[2].value,
+      codigo: columns[3].value,
+      descripcion: columns[4].value,
+      precio: columns[5].value,
+      imagen: columns[6].value,
+    }));
+
+    res.json({ products });
+  });
+});
+
 app.get('/api/products', (req, res, next) => {
   const page = req.query.page || 1;
   const pageSize = 20;
   const sort = req.query.sort || ''; // Opción de ordenamiento seleccionada
   const order = req.query.order || 'asc'; // Dirección del ordenamiento
+  const search = req.query.search || ''; // Obtiene el parámetro de búsqueda de la consulta
 
   let orderBy = 'id'; // Orden predeterminado por ID
   if (sort === 'price') {
@@ -81,6 +100,7 @@ app.get('/api/products', (req, res, next) => {
   let sql = `
     SELECT COUNT(*) OVER () as TotalCount, *
     FROM productos
+    WHERE nombre LIKE '%${search}%' OR codigo LIKE '%${search}%'
     ORDER BY ${orderBy} ${order} 
     OFFSET ${(page - 1) * pageSize} ROWS FETCH NEXT ${pageSize} ROWS ONLY
   `;

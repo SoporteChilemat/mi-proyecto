@@ -7,7 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const PromotionCarousel = () => {
     const [images, setImages] = useState([]);
-    const sliderRef = useRef(null); 
+    const sliderRef = useRef(null);
     const [autoRotate, setAutoRotate] = useState(true);
 
     useEffect(() => {
@@ -65,7 +65,8 @@ const PromotionCarousel = () => {
 
     const fetchImages = async () => {
         try {
-            const response = await axios.get('http://192.168.5.98:3000/api/promotionCarousel');
+            const ipAddress = window.location.hostname;
+            const response = await axios.get(`http://${ipAddress}:3000/api/promotionCarousel`);
             setImages(response.data.images);
         } catch (error) {
             console.error('Error fetching images:', error);

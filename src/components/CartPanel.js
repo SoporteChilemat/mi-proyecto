@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CartContext } from './CartContext';
 import './../css/CartPanel.css';
 import trashIcon from '../trash-can.png';
 
 const CartPanel = ({ isCartPanelOpen, setIsCartPanelOpen }) => {
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, removeFromCart, updateQuantityInCart, incrementQuantity, decrementQuantity } = useContext(CartContext);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -54,30 +54,50 @@ const CartPanel = ({ isCartPanelOpen, setIsCartPanelOpen }) => {
     };
   }, []);
 
-  const groupedCart = cart.reduce((accumulator, product) => {
-    if (accumulator[product.codigo]) {
-      accumulator[product.codigo].cantidad += 1;
-    } else {
-      accumulator[product.codigo] = { ...product, cantidad: 1 };
-    }
-    return accumulator;
-  }, {});
+  const sumaTotal = Math.round(
+    Object.values(cart).reduce((total, product) => {
+      const totalProducto = Math.round(product.cantidad * product.precio);
+      return total + totalProducto;
+    }, 0)
+  ).toLocaleString();
 
-  const sumaTotal = Math.round(Object.values(groupedCart).reduce((total, product) => {
-    const totalProducto = Math.round(product.cantidad * product.precio);
-    return total + totalProducto;
-  }, 0)).toLocaleString();
-
-  const cartItems = Object.entries(groupedCart).map(([codigo, product]) => {
+  const cartItems = Object.entries(cart).map(([codigo, product]) => {
     const totalProducto = Math.round(product.cantidad * product.precio).toLocaleString();
+
+    const handleRemoveFromCart = () => {
+      const cartItem = document.getElementById(`cart-item-${codigo}`);
+      cartItem.classList.add('cart-item-remove');
+      setTimeout(() => {
+        removeFromCart(codigo);
+      }, 500); // Espera 500ms antes de eliminar definitivamente el elemento del carrito
+    };
+
     return (
-      <div key={codigo} className="cart-panel-item">
-        <img src={`data:image/jpeg;base64,${product.imagen}`} />
-        <div className="separator">{product.nombre}</div>
-        <div className="separator">Precio: ${Math.round(product.precio).toLocaleString()}</div>
-        <div className="separator">Cantidad: {product.cantidad}</div>
-        <div className="separator">Total: ${totalProducto}</div>
-        <img src={trashIcon} alt="Eliminar" className="trash-icon" onClick={() => removeFromCart(codigo)} />
+      <div key={codigo} id={`cart-item-${codigo}`} className="cart-panel-item card">
+        <div className="cart-item-left">
+          <img src={`data:image/jpeg;base64,${product.imagen}`} className="cart-item-image" />
+        </div>
+        <div className="cart-item-right">
+          <div className="cart-item-name">{product.nombre}</div>
+          <div className="cart-item-price">Precio: ${Math.round(product.precio).toLocaleString()}</div>
+          <div className="quantity" id="quantity-pack">
+            <button className="quantity-decrement" onClick={() => decrementQuantity(product.codigo)}>-</button>
+            <input
+              type="number"
+              value={product.cantidad}
+              onChange={(e) => {
+                let newQuantity = parseInt(e.target.value);
+                if (isNaN(newQuantity) || newQuantity < 1) {
+                  newQuantity = 1;
+                }
+                updateQuantityInCart(codigo, newQuantity);
+              }}
+            />
+            <button className="quantity-increment" onClick={() => incrementQuantity(product.codigo)}>+</button>
+          </div>
+          <div className="cart-item-total">Total: ${totalProducto}</div>
+          <img src={trashIcon} alt="Eliminar" className="trash-icon" onClick={handleRemoveFromCart} />
+        </div>
       </div>
     );
   });

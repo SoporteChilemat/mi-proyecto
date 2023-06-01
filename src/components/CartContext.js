@@ -4,33 +4,59 @@ import React, { createContext, useState } from 'react';
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState({});
+
+    const updateQuantityInCart = (codigo, newQuantity) => {
+        setCart(prevCart => {
+            return {
+                ...prevCart,
+                [codigo]: { ...prevCart[codigo], cantidad: newQuantity },
+            };
+        });
+    };
+
+    const incrementQuantity = (codigo) => {
+        setCart(prevCart => {
+            return {
+                ...prevCart,
+                [codigo]: { ...prevCart[codigo], cantidad: prevCart[codigo].cantidad + 1 },
+            };
+        });
+    };
+
+    const decrementQuantity = (codigo) => {
+        setCart(prevCart => {
+            return prevCart[codigo].cantidad > 1
+                ? { ...prevCart, [codigo]: { ...prevCart[codigo], cantidad: prevCart[codigo].cantidad - 1 } }
+                : prevCart;
+        });
+    };
 
     const addToCart = (product) => {
         setCart(prevCart => {
-            const newCart = [...prevCart, product];
-            console.log('Product added to cart:', product);
-            console.log('Current cart:', newCart);
-            return newCart;
+            return prevCart[product.codigo]
+                ? {
+                    ...prevCart,
+                    [product.codigo]: {
+                        ...prevCart[product.codigo],
+                        cantidad: prevCart[product.codigo].cantidad + 1,
+                    },
+                }
+                : { ...prevCart, [product.codigo]: { ...product, cantidad: 1 } };
         });
     };
 
     const removeFromCart = (codigo) => {
         setCart(prevCart => {
-            const itemIndex = prevCart.findIndex(item => item.codigo === codigo);
-
-            if (itemIndex === -1) {
-                // no action needed if item not found
-                return prevCart;
-            }
-
-            // remove the first item that matches the code
-            return [...prevCart.slice(0, itemIndex), ...prevCart.slice(itemIndex + 1)];
+            const { [codigo]: value, ...remainingCart } = prevCart;
+            return remainingCart;
         });
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+        <CartContext.Provider
+            value={{ cart, addToCart, removeFromCart, updateQuantityInCart, incrementQuantity, decrementQuantity }}
+        >
             {children}
         </CartContext.Provider>
     );

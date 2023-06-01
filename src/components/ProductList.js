@@ -3,7 +3,7 @@ import ProductItem from './ProductItem';
 import './../css/ProductList.css';
 import './../css/ProductItem.css';
 
-const ProductList = () => {
+const ProductList = ({ searchQuery, setSearchQuery }) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -12,11 +12,17 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [page, sortOption]);
+  }, [page, sortOption, searchQuery]);
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`http://192.168.5.98:3000/api/products?page=${page}&sort=${sortOption.field}&order=${sortOption.order}`);
+      const ipAddress = window.location.hostname;
+      const url = `http://${ipAddress}:3000/api/products?page=${page}&sort=${sortOption.field}&order=${sortOption.order}`;
+      if (searchQuery) {
+        url += `&search=${searchQuery}`;
+      }
+
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         setTotalCount(data.totalCount);
@@ -27,6 +33,15 @@ const ProductList = () => {
     } catch (error) {
       console.error('Error fetching products:', error);
     }
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    fetchProducts();
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   const canGoNext = () => page < Math.ceil(totalCount / pageSize);

@@ -9,6 +9,11 @@ import './css/styles.css';
 
 const App = () => {
   const [isCartPanelOpen, setIsCartPanelOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchSubmit = (query) => {
+    setSearchQuery(query);
+  };
 
   return (
     <div className="app">
@@ -22,12 +27,13 @@ const App = () => {
         <i className="fa fa-whatsapp whatsapp-icon"></i>
       </a>
       {/* Resto del contenido */}
+      
       <CartProvider>
-        <BannerSuperior setIsCartPanelOpen={setIsCartPanelOpen} />
-        <CartPanel isCartPanelOpen={isCartPanelOpen} setIsCartPanelOpen={setIsCartPanelOpen} />
-        <PromotionCarousel />
-        <ProductList />
-        <BannerInferior />
+          <BannerSuperior setIsCartPanelOpen={setIsCartPanelOpen} handleSearchSubmit={handleSearchSubmit} />
+          <CartPanel isCartPanelOpen={isCartPanelOpen} setIsCartPanelOpen={setIsCartPanelOpen} />
+          <PromotionCarousel />
+          <ProductList searchQuery={searchQuery} />
+          <BannerInferior />
       </CartProvider>
     </div>
   );
