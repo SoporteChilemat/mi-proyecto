@@ -17,7 +17,7 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
   const fetchProducts = async () => {
     try {
       const ipAddress = window.location.hostname;
-      const url = `http://${ipAddress}:3000/api/products?page=${page}&sort=${sortOption.field}&order=${sortOption.order}`;
+      let url = `http://${ipAddress}:3000/api/products?page=${page}&sort=${sortOption.field}&order=${sortOption.order}`;
       if (searchQuery) {
         url += `&search=${searchQuery}`;
       }
@@ -33,15 +33,6 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
     } catch (error) {
       console.error('Error fetching products:', error);
     }
-  };
-
-  const handleSearchSubmit = (event) => {
-    event.preventDefault();
-    fetchProducts();
-  };
-
-  const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value);
   };
 
   const canGoNext = () => page < Math.ceil(totalCount / pageSize);
