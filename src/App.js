@@ -10,9 +10,16 @@ import './css/styles.css';
 const App = () => {
   const [isCartPanelOpen, setIsCartPanelOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
   const handleSearchSubmit = (query) => {
     setSearchQuery(query);
+  };
+
+  const handleSubcategoryClick = (category) => {
+    setSelectedCategory(category.categoria);
+    setSelectedSubcategory(category.subcategory);
   };
 
   return (
@@ -27,13 +34,21 @@ const App = () => {
         <i className="fa fa-whatsapp whatsapp-icon"></i>
       </a>
       {/* Resto del contenido */}
-      
+
       <CartProvider>
-          <BannerSuperior setIsCartPanelOpen={setIsCartPanelOpen} handleSearchSubmit={handleSearchSubmit} />
-          <CartPanel isCartPanelOpen={isCartPanelOpen} setIsCartPanelOpen={setIsCartPanelOpen} />
-          <PromotionCarousel />
-          <ProductList searchQuery={searchQuery} />
-          <BannerInferior />
+        <BannerSuperior
+          setIsCartPanelOpen={setIsCartPanelOpen}
+          handleSearchSubmit={handleSearchSubmit}
+          handleSubcategoryClick={handleSubcategoryClick}
+        />
+        <CartPanel isCartPanelOpen={isCartPanelOpen} setIsCartPanelOpen={setIsCartPanelOpen} />
+        <PromotionCarousel />
+        <ProductList
+          searchQuery={searchQuery}
+          selectedCategory={selectedCategory}
+          selectedSubcategory={selectedSubcategory}
+        />
+        <BannerInferior />
       </CartProvider>
     </div>
   );

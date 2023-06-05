@@ -3,37 +3,13 @@ import logo from '../logo.png';
 import './../css/BannerSuperior.css';
 import { CartContext } from './CartContext';
 import cartIcon from '../carrito.png';
+import axios from 'axios';
 
-const categories = [
-  {
-    id: 1,
-    name: 'Categoria 1',
-    subcategories: [
-      { id: 1, name: 'Subcategoria 1' },
-      { id: 2, name: 'Subcategoria 2' },
-      { id: 1, name: 'Subcategoria 1' },
-      { id: 2, name: 'Subcategoria 2' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Categoria 2',
-    subcategories: [
-      { id: 3, name: 'Subcategoria 3 Subcategoria 3' },
-      { id: 4, name: 'Subcategoria 4' },
-      { id: 1, name: 'Subcategoria 1' },
-      { id: 2, name: 'Subcategoria 2' },
-      { id: 1, name: 'Subcategoria 1' },
-      { id: 2, name: 'Subcategoria 2' },
-    ],
-  },
-];
-
-function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit }) {
+function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcategoryClick }) {
   const { cart } = useContext(CartContext);
   const [searchQuery, setSearchQuery] = useState('');
   const totalCartQuantity = Object.values(cart).reduce((total, product) => total + product.cantidad, 0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Nuevo estado para manejar si el menú está abierto
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
   const menuRef = useRef(null);
@@ -43,6 +19,22 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit }) {
       return total + totalProducto;
     }, 0)
   ).toLocaleString();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const ipAddress = window.location.hostname;
+        const response = await axios.get(`http://${ipAddress}:3000/api/categories`);
+        const formattedCategories = formatCategories(response.data.categories);
+        setCategories(formattedCategories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -57,7 +49,7 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit }) {
       setSelectedCategory(null);
     };
 
-    document.addEventListener('click', handleClickOutside, true); // Agregar el evento de clic con el tercer parámetro "true" para capturar el evento en la fase de captura
+    document.addEventListener('click', handleClickOutside, true);
     document.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -82,7 +74,7 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit }) {
     setIsMenuOpen(prevIsMenuOpen => {
       const newIsMenuOpen = !prevIsMenuOpen;
       if (!newIsMenuOpen) {
-        setSelectedCategory(null); // Restablecer la categoría seleccionada al cerrar el menú
+        setSelectedCategory(null);
       }
       setShouldRenderMenu(newIsMenuOpen);
       return newIsMenuOpen;
@@ -96,17 +88,36 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     handleSearchSubmit(searchQuery);
-    setSearchQuery(''); // Clear the search query text after search
+    setSearchQuery('');
   };
 
   const handleCategoryClick = (category) => {
-    if (selectedCategory === category.id) {
+    if (selectedCategory === category.categoria) {
       setSelectedCategory(null);
     } else {
-      setSelectedCategory(category.id);
+      setSelectedCategory(category.categoria);
     }
   };
-  
+
+  const handleSubmit2 = (category) => {
+    handleSubcategoryClick(category);
+  };
+
+  const formatCategories = (categoriesData) => {
+    const uniqueCategories = [...new Set(categoriesData.map(category => category.categoria))];
+    const categoryMap = {};
+    uniqueCategories.forEach(category => {
+      categoryMap[category] = [];
+    });
+    categoriesData.forEach(category => {
+      categoryMap[category.categoria].push(category.subcategoria);
+    });
+    return Object.keys(categoryMap).map(category => ({
+      categoria: category,
+      subcategorias: categoryMap[category]
+    }));
+  };
+
   return (
     <div className="banner-superior">
       <div className="center-container">
@@ -120,19 +131,22 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit }) {
           <div className="menu">
             {categories.map(category => (
               <div
-                key={category.id}
+                key={category.categoria}
                 className="menu-category button"
                 onClick={() => handleCategoryClick(category)}
               >
                 <span>
-                  <h2>{category.name}</h2>
+                  <h2>{category.categoria}</h2>
                 </span>
-                {selectedCategory === category.id && (
+                {selectedCategory === category.categoria && (
                   <div className="subcategory-container">
                     <ul>
-                      {category.subcategories.map(subcategory => (
-                        <li key={subcategory.id} className="menu-subcategory button">
-                          {subcategory.name}
+                      {category.subcategorias.map(subcategory => (
+                        <li
+                          key={subcategory}
+                          className="menu-subcategory button"
+                          onClick={() => handleSubmit2(category)}                        >
+                          {subcategory}
                         </li>
                       ))}
                     </ul>

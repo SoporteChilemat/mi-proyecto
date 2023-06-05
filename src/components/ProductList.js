@@ -3,7 +3,7 @@ import ProductItem from './ProductItem';
 import './../css/ProductList.css';
 import './../css/ProductItem.css';
 
-const ProductList = ({ searchQuery, setSearchQuery }) => {
+const ProductList = ({ searchQuery, selectedCategory, selectedSubcategory }) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -12,15 +12,29 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
 
   useEffect(() => {
     fetchProducts();
-  }, [page, sortOption, searchQuery]);
+  }, [page, sortOption, searchQuery, selectedCategory, selectedSubcategory]);
 
   const fetchProducts = async () => {
     try {
       const ipAddress = window.location.hostname;
       let url = `http://${ipAddress}:3000/api/products?page=${page}&sort=${sortOption.field}&order=${sortOption.order}`;
+
       if (searchQuery) {
         url += `&search=${searchQuery}`;
       }
+
+      console.log(selectedCategory);
+      console.log(selectedSubcategory);
+
+      // Agrega los parámetros de categoría y subcategoría
+      if (selectedCategory) {
+        url += `&category=${selectedCategory}`;
+      }
+      if (selectedSubcategory) {
+        url += `&subcategory=${selectedSubcategory}`;
+      }
+
+      console.log(url);
 
       const response = await fetch(url);
       if (response.ok) {
@@ -50,7 +64,7 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
 
   return (
     <div className="product-list-container">
-      <div class="pagination-and-sort">
+      <div className="pagination-and-sort">
         <div className="sort-dropdown">
           <select value={`${sortOption.field}-${sortOption.order}`} onChange={handleSortChange}>
             <option value="">Ordenar Por...</option>
@@ -62,7 +76,7 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
             <option value="code-desc">Codigo (Descendente)</option>
           </select>
         </div>
-        <div class="pagination-buttons pagination-buttons-top" id="pagination-buttons-top">
+        <div className="pagination-buttons pagination-buttons-top" id="pagination-buttons-top">
           <button disabled={!canGoPrev()} onClick={() => setPage(prevPage => prevPage - 1)}>
             Atras
           </button>

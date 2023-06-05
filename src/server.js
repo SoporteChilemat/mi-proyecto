@@ -81,6 +81,11 @@ app.get('/api/products', (req, res, next) => {
   const sort = req.query.sort || ''; // Opción de ordenamiento seleccionada
   const order = req.query.order || 'asc'; // Dirección del ordenamiento
   const search = req.query.search || ''; // Obtiene el parámetro de búsqueda de la consulta
+  const category = req.query.category || null;
+  const subcategory = req.query.subcategory || null;
+
+  console.log(category);
+  console.log(subcategory);
 
   let orderBy = 'id'; // Orden predeterminado por ID
   if (sort === 'price') {
@@ -96,11 +101,23 @@ app.get('/api/products', (req, res, next) => {
     return res.status(400).send('Invalid order parameter');
   }
 
+  console.log(`
+  SELECT COUNT(*) OVER () as TotalCount, *
+  FROM productos
+  WHERE (nombre LIKE '%${search}%' OR codigo LIKE '%${search}%') 
+  ${category ? `AND categoria = '${category}'` : ''} 
+  ${subcategory ? `AND subcategoria = '${subcategory}'` : ''}
+  ORDER BY ${orderBy} ${order} 
+  OFFSET ${(page - 1) * pageSize} ROWS FETCH NEXT ${pageSize} ROWS ONLY
+`);
+
   // Creamos la consulta SQL
   let sql = `
     SELECT COUNT(*) OVER () as TotalCount, *
     FROM productos
-    WHERE nombre LIKE '%${search}%' OR codigo LIKE '%${search}%'
+    WHERE (nombre LIKE '%${search}%' OR codigo LIKE '%${search}%') 
+    ${category ? `AND categoria = '${category}'` : ''} 
+    ${subcategory ? `AND subcategoria = '${subcategory}'` : ''}
     ORDER BY ${orderBy} ${order} 
     OFFSET ${(page - 1) * pageSize} ROWS FETCH NEXT ${pageSize} ROWS ONLY
   `;
@@ -124,6 +141,19 @@ app.get('/api/promotionCarousel', (req, res, next) => {
   executeQuery("SELECT * FROM promociones", function (rows) {
     const images = rows.map((columns) => columns[0].value);
     res.json({ images });
+  });
+});
+
+app.get('/api/categories', (req, res, next) => {
+  const sql = `SELECT DISTINCT categoria, subcategoria FROM productos`;
+
+  executeQuery(sql, function (rows) {
+    const categories = rows.map((columns) => ({
+      categoria: columns[0].value,
+      subcategoria: columns[1].value,
+    }));
+
+    res.json({ categories });
   });
 });
 

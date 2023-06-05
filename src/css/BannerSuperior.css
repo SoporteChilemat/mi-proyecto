@@ -128,25 +128,14 @@
 .button {
   border-radius: 10px;
   background-color: #00723c;
-  /* Color de fondo del botón */
-  border: none;
-  /* Quita el borde por defecto del botón */
   color: white;
-  /* Color del texto */
   text-align: center;
-  /* Alinea el texto al centro */
   padding: 0 16px;
-  /* Espacio alrededor del texto */
   text-decoration: none;
-  /* Quita la subraya por defecto de los enlaces */
-  display: inline-block;
-  /* Hace que el botón sea tan ancho como su contenido */
+  display: flex;
   margin: 2px 2px;
-  /* Espacio alrededor del botón */
   transition-duration: 0.4s;
-  /* Tiempo que tarda la transición al pasar el mouse por encima del botón */
   cursor: pointer;
-  /* Cambia el cursor a una mano al pasar por encima del botón */
 }
 
 .button:hover {
