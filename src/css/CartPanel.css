@@ -1,5 +1,8 @@
 .cart-panel {
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     top: 0;
     right: 0;
     max-width: 100%;
@@ -23,6 +26,7 @@
 }
 
 .cart-panel.open {
+    display: flex;
     transform: translateX(0);
 }
 
@@ -37,13 +41,23 @@
 }
 
 .cart-panel .total-label {
-    font-size: 14px;
+    font-size: 18px;
     margin-bottom: 10px;
     font-family: Arial, sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: bold;
     color: green;
+}
+
+.suma-total {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: rgb(255, 0, 0);
 }
 
 .cart-panel-item {
@@ -107,19 +121,34 @@
     transform-origin: top right;
 }
 
+.pdf {
+    padding: 10px 20px;
+    background-color: #00723c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50px;
+}
+
+.pdf:hover {
+    background-color: #5db577;
+}
+
 @keyframes cart-item-remove-animation {
     0% {
-        transform: scaleX(1);
+        transform: translateX(0);
         opacity: 1;
     }
 
     50% {
-        transform: scaleX(0) translateX(50%);
+        transform: translateX(50%);
         opacity: 0.5;
     }
 
     100% {
-        transform: scaleX(0) translateX(100%);
+        transform: translateX(100%);
         opacity: 0;
     }
 }
@@ -142,4 +171,20 @@
 .cart-item-remove .cart-item-price,
 .cart-item-remove .cart-item-total {
     color: #777;
+}
+
+.clear-cart {
+    padding: 10px 20px;
+    background-color: #f54242; /* You can change the color as you prefer */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50px;
+    margin-top: 10px;
+}
+
+.clear-cart:hover {
+    background-color: #f56565; /* This color will be applied when you hover the button. You can change it as you prefer */
 }

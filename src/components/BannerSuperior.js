@@ -12,6 +12,8 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcateg
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
+  const [isFilterActive, setIsFilterActive] = useState(false);
+  const [isCartEmpty, setIsCartEmpty] = useState(totalCartQuantity === 0);
   const menuRef = useRef(null);
   const sumaTotal = Math.round(
     Object.values(cart).reduce((total, product) => {
@@ -20,6 +22,16 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcateg
     }, 0)
   ).toLocaleString();
   const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    setIsCartEmpty(totalCartQuantity === 0);
+  }, [totalCartQuantity]);
+
+  useEffect(() => {
+    if (isCartEmpty) {
+      setIsCartPanelOpen(false);
+    }
+  }, [isCartEmpty]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -59,11 +71,9 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcateg
   }, [setIsMenuOpen, setSelectedCategory]);
 
   const handleCartIconClick = () => {
-    setIsCartPanelOpen(prevIsCartPanelOpen => {
-      const newIsCartPanelOpen = !prevIsCartPanelOpen;
-      console.log('Cart icon clicked, isCartPanelOpen:', newIsCartPanelOpen);
-      return newIsCartPanelOpen;
-    });
+    if (!isCartEmpty) {
+      setIsCartPanelOpen(prevIsCartPanelOpen => !prevIsCartPanelOpen);
+    }
   };
 
   const handleBannerClick = () => {
@@ -99,8 +109,10 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcateg
     }
   };
 
-  const handleSubmit2 = (category) => {
-    handleSubcategoryClick(category);
+  const handleSubmit2 = (category, subcategory) => {
+    setIsMenuOpen(false);
+    setIsFilterActive(true);
+    handleSubcategoryClick(category, subcategory);
   };
 
   const formatCategories = (categoriesData) => {
@@ -116,6 +128,13 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcateg
       categoria: category,
       subcategorias: categoryMap[category]
     }));
+  };
+
+  const clearFilter = () => {
+    setSelectedCategory(null);
+    setIsMenuOpen(false);
+    setIsFilterActive(false);
+    handleSubcategoryClick('', '');
   };
 
   return (
@@ -145,7 +164,8 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcateg
                         <li
                           key={subcategory}
                           className="menu-subcategory button"
-                          onClick={() => handleSubmit2(category)}                        >
+                          onClick={() => handleSubmit2(category, subcategory)}
+                        >
                           {subcategory}
                         </li>
                       ))}
@@ -157,6 +177,11 @@ function BannerSuperior({ setIsCartPanelOpen, handleSearchSubmit, handleSubcateg
           </div>
         )}
       </div>
+      {isFilterActive && (
+        <button className="clear-filter-button" onClick={clearFilter}>
+          Quitar
+        </button>
+      )}
       <form className="search-form" onSubmit={handleSubmit}>
         <input
           type="text"

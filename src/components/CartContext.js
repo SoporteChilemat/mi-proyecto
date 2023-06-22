@@ -15,6 +15,10 @@ export const CartProvider = ({ children }) => {
         });
     };
 
+    const clearCart = () => {
+        setCart({});
+    };
+
     const incrementQuantity = (codigo) => {
         setCart(prevCart => {
             return {
@@ -55,7 +59,7 @@ export const CartProvider = ({ children }) => {
 
     return (
         <CartContext.Provider
-            value={{ cart, addToCart, removeFromCart, updateQuantityInCart, incrementQuantity, decrementQuantity }}
+            value={{ cart, addToCart, removeFromCart, updateQuantityInCart, incrementQuantity, decrementQuantity, clearCart }}
         >
             {children}
         </CartContext.Provider>

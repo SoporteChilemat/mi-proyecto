@@ -10,10 +10,10 @@ const SOCIAL_MEDIA_URLS = [
 ];
 
 const ADDRESS_LIST = [
-  { address: "Dirección 1", mapsUrl: "https://www.google.com/maps?q=Dirección+1" },
-  { address: "Dirección 2", mapsUrl: "https://www.google.com/maps?q=Dirección+2" },
-  { address: "Dirección 3", mapsUrl: "https://www.google.com/maps?q=Dirección+3" },
-  { address: "Dirección 4", mapsUrl: "https://www.google.com/maps?q=Dirección+4" },
+  { address: "Maturana 90, Villa Alemana.", mapsUrl: "https://www.google.cl/maps/place/Ferretería+Comercial+Francisco+Toso+ltda./@-33.0452045,-71.3770265,17z/data=!3m1!4b1!4m6!3m5!1s0x9689d78382b97efb:0x9678cc7254a6c0a8!8m2!3d-33.045209!4d-71.3744516!16s%2Fg%2F1td0zpk9?entry=ttu" },
+  { address: "Manuel Montt 65, Peñablanca.", mapsUrl: "https://www.google.com/maps/place/Ferreter%C3%ADa+Francisco+Toso,+Chilemat/@-33.0490536,-71.3495041,15z/data=!4m2!3m1!1s0x0:0xa8d035123a4db83f?sa=X&ved=2ahUKEwio45vk_K7_AhUcKLkGHRUBASgQ_BJ6BAg1EAg" },
+  { address: "Calle Colegio 1867, Olmue.", mapsUrl: "https://www.google.com/maps/place/Comercial+Toso+Limitada.+Chile+Mat/@-32.9983928,-71.1807687,15z/data=!4m2!3m1!1s0x0:0x541100152d291223?sa=X&ved=2ahUKEwi_jdD3_K7_AhUXB7kGHUyzD4UQ_BJ6BAg4EAg" },
+  { address: "Barrio Industrial 701, Alto Peñuelas, Bodega E28, Coquimbo.", mapsUrl: "google.com/maps/place/NOTARIA+Del+Barrio+Industrial/@-29.9659208,-71.2708022,17z/data=!4m10!1m2!2m1!1sBarrio+Industrial+701,+Alto+Peñuelas,+Bodega+E28,+Coquimbo!3m6!1s0x9691cbeafad4c161:0x7cbfe43158fbb34a!8m2!3d-29.9659255!4d-71.2659313!15sCjtCYXJyaW8gSW5kdXN0cmlhbCA3MDEsIEFsdG8gUGXDsXVlbGFzLCBCb2RlZ2EgRTI4LCBDb3F1aW1ib5IBDW5vdGFyeV9wdWJsaWPgAQA!16s%2Fg%2F11h9ryqmwz?hl=es-ES&entry=ttu" },
 ];
 
 const BannerInferior = () => {

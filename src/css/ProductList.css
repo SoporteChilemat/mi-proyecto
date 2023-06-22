@@ -1,35 +1,36 @@
 :root {
-    --primary-color: #00723c;
-    --secondary-color: #e1e6e3;
-    --box-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --box-shadow-dark: 0 2px 5px rgba(0, 0, 0, 0.1);
-    --border-radius: 5px;
+    /* Definición de variables de colores */
+    --primary-color: #00723c; /* Color principal */
+    --secondary-color: #e1e6e3; /* Color secundario */
+    --box-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra clara */
+    --box-shadow-dark: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra oscura */
+    --border-radius: 5px; /* Radio del borde */
 }
 
 .product-list-container {
-    width: 80%;
-    margin: auto;
-    padding: 2rem;
+    width: 80%; /* Ancho del contenedor de la lista de productos */
+    margin: auto; /* Margen automático para centrar horizontalmente */
+    padding: 2rem; /* Espaciado interno */
     /*box-shadow: var(--box-shadow-light);*/
 }
 
 .product-list {
     display: grid;
-    grid-gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px; /* Espaciado entre elementos */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Columnas responsivas */
 }
 
 .pagination-and-sort {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centrar horizontalmente */
 }
 
 .pagination-buttons {
-    margin-right: 10px;
+    margin-right: 10px; /* Margen derecho */
 }
 
 .sort-dropdown {
-    margin-right: auto;
+    margin-right: auto; /* Margen derecho automático para mover a la derecha */
 }
 
 .sort-dropdown select {
@@ -47,12 +48,12 @@
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos para los botones de arriba */
+/* Estilos para los botones de paginación arriba */
 .pagination-buttons-top {
     margin-bottom: 20px;
 }
 
-/* Estilos para los botones de abajo */
+/* Estilos para los botones de paginación abajo */
 .pagination-buttons-bottom {
     margin-top: 20px;
 }
@@ -69,7 +70,6 @@
     transition: background-color 0.3s ease;
 }
 
-
 .pagination-buttons button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -81,26 +81,27 @@
 }
 
 @media (max-width: 767px) {
+    /* Estilos para pantallas más pequeñas */
     .product-list {
-        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Columnas responsivas */
     }
 
     .pagination-and-sort {
         flex-direction: column;
-        justify-content: center;
+        justify-content: center; /* Centrar verticalmente */
     }
 
     .pagination-buttons {
         margin: auto auto;
         margin-top: 10px;
         margin-bottom: 10px;
-        /* Espacio vertical entre pagination y sort-dropdown */
+        /* Espacio vertical entre paginación y menú desplegable de ordenamiento */
     }
 
     .sort-dropdown {
         margin: 0 auto;
-        /* Center horizontally */
+        /* Centrar horizontalmente */
         text-align: center;
-        /* Center contents */
+        /* Centrar contenido */
     }
-} 
+}

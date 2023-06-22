@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { CartContext } from './CartContext';
 import './../css/CartPanel.css';
 import trashIcon from '../trash-can.png';
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 const CartPanel = ({ isCartPanelOpen, setIsCartPanelOpen }) => {
-  const { cart, removeFromCart, updateQuantityInCart, incrementQuantity, decrementQuantity } = useContext(CartContext);
+  const { cart, removeFromCart, updateQuantityInCart, incrementQuantity, decrementQuantity, clearCart } = useContext(CartContext);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -61,6 +63,35 @@ const CartPanel = ({ isCartPanelOpen, setIsCartPanelOpen }) => {
     }, 0)
   ).toLocaleString();
 
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const tableColumns = ["Nombre", "Código", "Descripción", "Cantidad", "Total"];
+    const tableRows = [];
+
+    Object.entries(cart).forEach(([codigo, product]) => {
+      const productData = [
+        product.nombre,
+        codigo,
+        product.descripcion, // Assuming this field exists
+        product.cantidad,
+        Math.round(product.cantidad * product.precio).toLocaleString(),
+      ];
+      tableRows.push(productData);
+    });
+
+    doc.autoTable(tableColumns, tableRows, { startY: 20 });
+
+    const finalY = doc.previousAutoTable.finalY; // Get the y position of the last element
+    doc.text(`Total General: $${sumaTotal}`, 14, finalY + 20);
+
+    doc.save("cotizacion.pdf");
+  };
+
+  const handleClearCart = () => {
+    clearCart();
+  };
+
   const cartItems = Object.entries(cart).map(([codigo, product]) => {
     const totalProducto = Math.round(product.cantidad * product.precio).toLocaleString();
 
@@ -104,9 +135,12 @@ const CartPanel = ({ isCartPanelOpen, setIsCartPanelOpen }) => {
 
   return (
     <div className={`cart-panel ${isCartPanelOpen ? 'open' : 'close'}`}>
-      <h2>Cotización:</h2>
+      <button className="clear-cart" onClick={handleClearCart}>Vaciar Carrito</button>
+      <h2>Cotización</h2>
       {cartItems}
-      <span className="total-label">Total General:</span> ${sumaTotal}
+      <span className="total-label">Total General: </span>
+      <span className="suma-total"> $ {sumaTotal}</span>
+      <button className="pdf" onClick={generatePDF}>Generar Cotización</button>
     </div>
   );
 };

@@ -26,35 +26,40 @@ const config = {
   },
 };
 const executeQuery = (sql, res) => {
-  const connection = new Connection(config);
+  try {
+    const connection = new Connection(config);
 
-  connection.on('connect', function (err) {
-    if (err) {
-      console.error('Connection error: ', err);
-      return setTimeout(() => connection.connect(), 5000); // Retry connection after 5 seconds
-    }
-
-    var request = new Request(sql, function (err, rowCount, rows) {
+    connection.on('connect', function (err) {
       if (err) {
-        console.error('Error executing query: ', err);
-        return next(err);
+        console.error('Connection error: ', err);
+        return setTimeout(() => connection.connect(), 5000); // Retry connection after 5 seconds
       }
-    }).on('doneInProc', function (rowCount, more, rows) {
-      res(rows);
+
+      var request = new Request(sql, function (err, rowCount, rows) {
+        if (err) {
+          console.error('Error executing query: ', err);
+          return next(err);
+        }
+      }).on('doneInProc', function (rowCount, more, rows) {
+        res(rows);
+      });
+
+      connection.execSql(request);
     });
 
-    connection.execSql(request);
-  });
+    connection.on('error', function (err) {
+      if (err.code === 'ECONNRESET') {
+        console.error('Connection reset by peer');
+      } else {
+        console.error(err);
+      }
+    });
 
-  connection.on('error', function (err) {
-    if (err.code === 'ECONNRESET') {
-      console.error('Connection reset by peer');
-    } else {
-      console.error(err);
-    }
-  });
-
-  connection.connect();
+    connection.connect();
+  } catch (error) {
+    console.error('Error executing query: ', error);
+    res([]);
+  }
 };
 
 app.get('/api/searchProducts', (req, res, next) => {

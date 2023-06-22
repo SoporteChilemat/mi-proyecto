@@ -60,6 +60,16 @@
     margin: 0;
 }
 
+.address-list li {
+    position: relative; /* Agregado: Establece posición relativa */
+    padding-bottom: 10px; /* Agregado: Espacio entre elementos */
+    transition: transform 0.3s ease;
+}
+
+.address-list li:hover {
+    transform: scale(1.2); /* Agregado: Aumenta el tamaño en un 20% */
+}
+
 .logoInferior {
     max-width: 100%;
     cursor: pointer;
@@ -69,11 +79,12 @@
     margin-right: 20px;
     font-size: 24px;
     color: white;
-    /* Added: Set the social icon color to white */
+    vertical-align: middle; /* Agregado: Alineación vertical */
+    transition: transform 0.3s ease; /* Agregado: Transición suave */
 }
 
 .social-icons a.social-icon:hover {
-    font-size: 28px;
+    transform: scale(1.4); /* Agregado: Aumenta el tamaño en un 20% */
 }
 
 /* BannerInferior.css */

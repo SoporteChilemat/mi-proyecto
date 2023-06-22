@@ -10,20 +10,24 @@ import './css/styles.css';
 const App = () => {
   const [isCartPanelOpen, setIsCartPanelOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
 
   const handleSearchSubmit = (query) => {
     setSearchQuery(query);
   };
 
-  const handleSubcategoryClick = (category) => {
+  const handleSubcategoryClick = (category, subcategory) => {
     setSelectedCategory(category.categoria);
-    setSelectedSubcategory(category.subcategory);
+    setSelectedSubcategory(subcategory);
+  };
+
+  const handleTouchStart = (e) => {
+    e.preventDefault();
   };
 
   return (
-    <div className="app">
+    <div className="app" onTouchStart={handleTouchStart} style={{ userSelect: 'none' }}>
       {/* WhatsApp icon */}
       <a
         href="https://wa.me/56950061135"
@@ -36,19 +40,19 @@ const App = () => {
       {/* Resto del contenido */}
 
       <CartProvider>
-        <BannerSuperior
+        {/* <BannerSuperior
           setIsCartPanelOpen={setIsCartPanelOpen}
           handleSearchSubmit={handleSearchSubmit}
           handleSubcategoryClick={handleSubcategoryClick}
-        />
-        <CartPanel isCartPanelOpen={isCartPanelOpen} setIsCartPanelOpen={setIsCartPanelOpen} />
-        <PromotionCarousel />
-        <ProductList
+        /> */}
+        {/* <CartPanel isCartPanelOpen={isCartPanelOpen} setIsCartPanelOpen={setIsCartPanelOpen} /> */}
+        {/* <PromotionCarousel /> */}
+         <ProductList
           searchQuery={searchQuery}
           selectedCategory={selectedCategory}
           selectedSubcategory={selectedSubcategory}
-        />
-        <BannerInferior />
+        /> 
+         <BannerInferior />
       </CartProvider>
     </div>
   );
